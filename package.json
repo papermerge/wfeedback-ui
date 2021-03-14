@@ -1,6 +1,13 @@
 {
-  "name": "wfeedback-ui",
-  "dependencies": {
+  "name": "WFeedback-UI",
+  "keywords": [
+    "papermerge",
+    "dms",
+    "document management system"
+  ],
+  "author": "Eugen Ciur",
+  "license": "Apache 2.0",
+  "devDependencies": {
     "gulp": "^4.0.2",
     "gulp-cli": "^2.3.0"
   }

@@ -1,6 +1,6 @@
-function hello(cb) {
+function hello(callback) {
   console.log('Hello Zell');
-  cb();
+  callback();
 };
 
 exports.default = hello;
