@@ -1,3 +1,26 @@
 html body {
   margin: 0;
   padding: 0; }
+
+.led {
+  margin: 20px auto;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.25);
+  box-shadow: #000 0 -1px 1px 1px; }
+
+.led-red {
+  background-color: #F00; }
+
+.led-orange {
+  background-color: #FF7000; }
+
+.led-yellow {
+  background-color: #FF0; }
+
+.led-green {
+  background-color: #80FF00; }
+
+.led-blue {
+  background-color: #06F; }
