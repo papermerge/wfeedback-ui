@@ -1,1 +1,6 @@
-console.log("Hello!");
+
+class WFeedback {
+    constructor() {
+        console.log("Hello!");        
+    }
+}

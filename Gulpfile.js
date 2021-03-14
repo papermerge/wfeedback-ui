@@ -1,4 +1,4 @@
-const {src, dest, watch, series, parallel} = require('gulp');
+const {src, dest, watch, series} = require('gulp');
 const sass = require('gulp-sass');
 const concat = require('gulp-concat');
 const replace = require('gulp-replace');
@@ -12,7 +12,6 @@ const files = {
 function sass_task() {
     return src(files.sass_path)
         .pipe(sass())
-        .pipe(sourcemaps.write('.'))
         .pipe(dest('dist'));
 }
 
@@ -22,6 +21,7 @@ function js_task() {
         .pipe(dest('dist'));
 }
 
+/*
 function cache_bust_task() {
     let cbString = new Date().getTime();
 
@@ -29,6 +29,7 @@ function cache_bust_task() {
     .pipe(replace(/cb=\d+/g, 'cb=' + cbString))
     .pipe(dest('.'))
 }
+*/
 
 /*
 function watch_task() {
@@ -42,5 +43,4 @@ function watch_task() {
 exports.default = series(
     sass_task,
     js_task,
-    cache_bust_task,
 );
