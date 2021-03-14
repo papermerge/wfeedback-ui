@@ -1,5 +1,5 @@
 
-class WFeedback {
+class LEDStatus {
 
     constructor() {
         console.log("Hello!");        
