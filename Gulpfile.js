@@ -9,16 +9,18 @@ const files = {
     js_path: "app/js/**/*.js"
 };
 
+const distribution_folder = "dist";
+
 function sass_task() {
     return src(files.sass_path)
         .pipe(sass())
-        .pipe(dest('dist'));
+        .pipe(dest(distribution_folder));
 }
 
 function js_task() {
     return src(files.js_path)
         .pipe(concat('all.js'))
-        .pipe(dest('dist'));
+        .pipe(dest(distribution_folder));
 }
 
 /*
@@ -31,16 +33,15 @@ function cache_bust_task() {
 }
 */
 
-/*
 function watch_task() {
     watch(
-        [files.scss_path, files.js_path],
-        [sass_task, js_task, cache_bust_task]
+        [files.sass_path, files.js_path],
+        series(sass_task, js_task)
     );
 }
-*/
 
 exports.default = series(
     sass_task,
     js_task,
+    watch_task
 );

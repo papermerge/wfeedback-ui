@@ -6,5 +6,6 @@ Provides (user interface) feedback for various background tasks like document/pa
 
 # Usage
 
+Following command will assemble assets into dist folder:
 
 $ gulp
