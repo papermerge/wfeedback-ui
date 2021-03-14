@@ -1,7 +1,6 @@
-# LED Status Indicators (LEDSi)
+# LED Status Indicators
 
-Workers' feedback user interface.
-Provides (user interface) feedback for various background tasks like document/page OCR.
+LED statuses provide (user interface) workers feedback for various background tasks like document/page OCR.
 
 
 # Usage
