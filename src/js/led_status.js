@@ -42,12 +42,12 @@ export class LEDDocumentStatus {
         let $dom_node = this.find_node(doc_data);
 
         if ($dom_node) {
-            this.update_state($dom_elem, ocr_state);
+            this.update_state($dom_node, ocr_state);
         }
     }
 
     find_node(doc_data) {
-        let doc_node = $(config['node_selector']).find(
+        let doc_node = $(this._config['node_selector']).find(
             `[data-id='${doc_data['document_id']}']`
         );
         return doc_node;
@@ -61,7 +61,7 @@ export class LEDDocumentStatus {
             return;
         }
 
-        $led_elem = $dom_elem.find(config['led_selector']);
+        $led_elem = $dom_elem.find(this._config['led_selector']);
         if (_.isEmpty($led_elem)) {
             console.error("LEDStatus: empty led status element");
             return;

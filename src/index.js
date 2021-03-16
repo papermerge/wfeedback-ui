@@ -16,8 +16,8 @@ $(function(){
     led_status = new LEDDocumentStatus(events, config);
 
     $("button#apply").click(function(){
-        let folder_id, state;
-
+        let document_id, state, result, message;
+        
         document_id = $("#document-selector").val();
         state = $('#document-state').val();
         result = $('#document-result').val();
@@ -32,7 +32,8 @@ $(function(){
             }
         }
         events.trigger(
-            "leds.document", message);
+            "leds.document", message
+        );
 
     });
 
