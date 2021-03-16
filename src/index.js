@@ -15,5 +15,26 @@ $(function(){
     };
     led_status = new LEDDocumentStatus(events, config);
 
-    events.trigger("leds.message", "Hello, World!");
+    $("button#apply").click(function(){
+        let folder_id, state;
+
+        document_id = $("#document-selector").val();
+        state = $('#document-state').val();
+        result = $('#document-result').val();
+
+        message = {
+            "document_data": {
+                "document_id": document_id
+            },
+            "ocr_state": {
+                "state": state,
+                "result": result
+            }
+        }
+        events.trigger(
+            "leds.document", message);
+
+    });
+
+    
 });

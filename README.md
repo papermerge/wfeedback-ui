@@ -13,7 +13,6 @@ Project contains following folders:
 ## Usage
 
 
-
 Following command will assemble assets into dist folder:
 
 $ gulp

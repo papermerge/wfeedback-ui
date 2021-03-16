@@ -1,7 +1,10 @@
 import _ from "underscore";
 import $ from "jquery";
 
-export const OCR_START = 'ocr_start';
+const OCR_START = 'ocr-start';
+const OCR_COMPLETE = 'ocr-complete';
+const SUCCESS = 'success'
+const ERROR = 'error';
 
 const YELLOW = 'led-yellow';
 const GREEN = 'led-green';
@@ -73,13 +76,13 @@ export class LEDDocumentStatus {
             $led_elem.addClass([GREEN, BLINK])
         }
 
-        if (state == OCR_COMPLETE && result == OCR_SUCCESS) {
+        if (state == OCR_COMPLETE && result == SUCCESS) {
             // green static
             $led_elem.removeClass(LED_CLASSES);
             $led_elem.addClass([GREEN])
         }
 
-        if (state == OCR_COMPLETE && result == OCR_ERROR) {
+        if (state == OCR_COMPLETE && result == ERROR) {
             // red static
             $led_elem.removeClass(LED_CLASSES);
             $led_elem.addClass([RED])
