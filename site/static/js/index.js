@@ -1,16 +1,13 @@
-import { LEDDocumentStatus } from "../dist/leds.bundle.js";
-
-
 $(function(){
 
-    let events, config, led_status;
+    let events, config, ls;
 
     events = _.clone(Backbone.Events);
     config = {
         'node_selector': '.node',
         'led_selector': '.led' // led selector within node
     };
-    led_status = new LEDDocumentStatus(events, config);
+    ls = new LEDS.LEDDocumentStatus(events, config);
 
     $("button#apply").click(function(){
         let document_id, state, result, message;
