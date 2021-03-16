@@ -1,12 +1,11 @@
 const {src, dest, watch, series} = require('gulp');
 const sass = require('gulp-sass');
-const concat = require('gulp-concat');
-const replace = require('gulp-replace');
+const run = require('gulp-run-command').default;
 const sourcemaps = require('gulp-sourcemaps');
 
 const files = {
-    sass_path: "leds/scss/**/*.scss",
-    js_path: "leds/js/**/*.js"
+    sass_path: "src/scss/**/*.scss",
+    js_path: "src/js/**/*.js"
 };
 
 const distribution_folder = "dist";
@@ -17,10 +16,9 @@ function sass_task() {
         .pipe(dest(distribution_folder));
 }
 
-function js_task() {
-    return src(files.js_path)
-        .pipe(concat('all.js'))
-        .pipe(dest(distribution_folder));
+function js_bundle(cb) {
+    run("npx webpack --mode development");
+    cb();
 }
 
 /*
@@ -36,12 +34,12 @@ function cache_bust_task() {
 function watch_task() {
     watch(
         [files.sass_path, files.js_path],
-        series(sass_task, js_task)
+        series(sass_task, js_bundle)
     );
 }
 
 exports.default = series(
     sass_task,
-    js_task,
+    js_bundle,
     watch_task
 );

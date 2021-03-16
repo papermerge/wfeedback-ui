@@ -52,13 +52,11 @@ export class LEDDocumentStatus {
         document_id = doc_data['document_id'];
         selector = this._config['node_selector'];
         doc_node = $(`${selector}[data-id='${document_id}']`);
-
         /*
         console.log(
             `Node selector = ${selector}[data-id='${document_id}'], count=${doc_node.length}`
         );
         */
-
         return doc_node;
     }
 

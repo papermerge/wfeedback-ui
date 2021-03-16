@@ -13,6 +13,7 @@
     "gulp-cli": "^2.3.0",
     "gulp-concat": "^2.6.1",
     "gulp-replace": "^1.0.0",
+    "gulp-run-command": "0.0.10",
     "gulp-sass": "^4.1.0",
     "gulp-sourcemap": "^1.0.1",
     "gulp-sourcemaps": "^3.0.0",
