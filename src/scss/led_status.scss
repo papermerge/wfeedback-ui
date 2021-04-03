@@ -18,8 +18,16 @@
     fill: orange;
 }
 
+.led-in-progress {
+    fill: None;
+}
+
 .led-success {
-    fill: green;
+    fill: #0aa70a;
+}
+
+.led-fail {
+    fill: #e22e2e;;
 }
 
 .led-red.blink {
@@ -44,6 +52,16 @@
 
 .led-blue {
     background-color: #06F;
+}
+
+.led-in-progress {
+  animation: rotate_svg 1s linear infinite;
+}
+
+@keyframes rotate_svg {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes red_blink {
