@@ -13,14 +13,6 @@ const OCR_COMPLETE = 'ocr-complete';
 const SUCCESS = 'success'
 const ERROR = 'error';
 
-const YELLOW = 'led-yellow';
-const GREEN = 'led-green';
-const RED = 'led-red';
-const BLINK = 'blink';
-
-const LED_CLASSES = [
-    GREEN, YELLOW, RED, BLINK
-]
 
 export class LEDDocumentStatus {
 
