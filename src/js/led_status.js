@@ -7,11 +7,10 @@ import led_in_progress_svg from '../assets/led-in-progress.svg';
 import led_success_svg from '../assets/led-success.svg';
 import led_fail_svg from '../assets/led-fail.svg';
 
-const PENDING = 'pending';
-const OCR_START = 'ocr-start';
-const OCR_COMPLETE = 'ocr-complete';
-const SUCCESS = 'success'
-const ERROR = 'error';
+
+const OCRDOCUMENT_RECEIVED = 'ocrdocument.received'
+const OCRDOCUMENT_STARTED = 'ocrdocument.started'
+const OCRDOCUMENT_SUCCEEDED = 'ocrdocument.succeeded'
 
 
 export class LEDDocumentStatus {
@@ -44,28 +43,56 @@ export class LEDDocumentStatus {
     }
 
     on_update(message) {
+        /*
+        Message is a dictionary with following keys:
+            * type
+            * document_id
+            * user_id
+        Where type can have one of following string values:
+            * ocrdocument.received
+            * ocrdocument.started
+            * ocrdocument.succeeded
+        */
         let led_doc;
 
         if (_.isEmpty(message)) {
             return ;
         }
-        console.log(message);
-        this.update(message['document_data'], message['ocr_state']);
+        this.update(message);
     }
 
-    update(doc_data, ocr_state) {
-
-        let $dom_node = this.find_node(doc_data);
+    update(message) {
+        /*
+        Message is a dictionary with following keys:
+            * type
+            * document_id
+            * user_id
+        Where type can have one of following string values:
+            * ocrdocument.received
+            * ocrdocument.started
+            * ocrdocument.succeeded
+        */
+        let $dom_node = this.find_node(message);
 
         if ($dom_node) {
-            this.update_state($dom_node, ocr_state);
+            this.update_state($dom_node, message);
         }
     }
 
-    find_node(doc_data) {
+    find_node(message) {
+        /*
+        Message is a dictionary with following keys:
+            * type
+            * document_id
+            * user_id
+        Where type can have one of following string values:
+            * ocrdocument.received
+            * ocrdocument.started
+            * ocrdocument.succeeded
+        */
         let doc_node, nodes, selector, document_id;
 
-        document_id = doc_data['document_id'];
+        document_id = message['document_id'];
         selector = this._config['node_selector'];
         doc_node = $(`${selector}[data-id='${document_id}']`);
         /*
@@ -77,8 +104,8 @@ export class LEDDocumentStatus {
         return doc_node;
     }
 
-    update_state($dom_node, ocr_state) {
-        let $led_elem, state, result, css_selector;
+    update_state($dom_node, message) {
+        let $led_elem, css_selector, message_type;
 
         if (_.isEmpty($dom_node)) {
             console.error("LEDStatus: empty node element");
@@ -88,29 +115,19 @@ export class LEDDocumentStatus {
         css_selector = this._config['led_selector']
         $led_elem = $dom_node.find(css_selector);
 
+        message_type = message['type'];
+
         if (_.isEmpty($led_elem)) {
             console.error("LEDStatus: empty led status element");
             return;
         }
 
-        //console.log(`Found count ${ $led_elem.length } led elements`);
-
-        state = ocr_state['state'];
-        result = ocr_state['result']
-
-        //console.log(`state=${state}`)
-
-        if (state == PENDING) {
+        if (message_type == OCRDOCUMENT_RECEIVED) {
             $led_elem.html(led_pending_svg);
-        } else if (state == OCR_START) {
-            // green blinking
+        } else if (message_type == OCRDOCUMENT_STARTED) {
             $led_elem.html(led_in_progress_svg);
-        } else if (state == OCR_COMPLETE && result == SUCCESS) {
-            // green static
+        } else if (message_type == OCRDOCUMENT_SUCCEEDED){
             $led_elem.html(led_success_svg);
-        } else if (state == OCR_COMPLETE && result == ERROR) {
-            // red static
-            $led_elem.html(led_fail_svg);
         }
     }
 }
