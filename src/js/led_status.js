@@ -20,7 +20,7 @@ let default_config = {
     'use_sockets': true
 }
 
-export class LEDDocumentStatus {
+class LEDStatus {
 
     constructor(dispatcher, config={}) {
         /**
@@ -39,7 +39,7 @@ export class LEDDocumentStatus {
         }
         this._config = Object.assign(default_config, config)
         this._dispatcher = dispatcher;
-        this._dispatcher.on("leds.document", this.on_update, this);
+        this._dispatcher.on(this.event_name, this.on_update, this);
 
         if (this._config['use_sockets']) { 
             ws_url = this.get_ws_url(window.location);
@@ -47,9 +47,21 @@ export class LEDDocumentStatus {
             this._socket = new WebSocket(ws_url);
             this._socket.onmessage = function(e) {
                 const data = JSON.parse(e.data);
-                that._dispatcher.trigger("leds.document", data);
+                that._dispatcher.trigger(this.event_name, data);
             };
         }
+    }
+
+    get event_name() {
+        throw "Not defined";
+    }
+
+    get path_name() {
+        throw "Not defined";
+    }
+
+    pull(document_id) {
+        throw "Not defined";
     }
 
     get_ws_url(window_location) {
@@ -65,7 +77,7 @@ export class LEDDocumentStatus {
         */
         let host = window_location.host,
             proto = window_location.protocol,
-            path = 'ws/document';
+            path = this.path_name;
 
         if (proto == 'http:') {
             return `ws://${host}/${path}`;
@@ -82,22 +94,6 @@ export class LEDDocumentStatus {
                that._socket.send(JSON.stringify(message)); 
             }
         }
-    }
-
-    pull(document_id) {
-        /*
-        Sends via websocket 'ocrdocument.pull' message to the server.
-
-        'ocrdocument.pull' message basically asks server to send to the
-        client current document status (of the `document_id`).
-        */
-        let message, that=this;
-
-        message = {
-            'document_id': document_id,
-            'type': 'ocrdocument.pull'
-        }
-        this._send(message);
     }
 
     on_update(message) {
@@ -138,6 +134,41 @@ export class LEDDocumentStatus {
     }
 
     find_node(message) {
+        throw "Not defined";
+    }
+
+    update_state($dom_node, message) {
+        throw "Not defined";
+    }
+}
+
+export class LEDDocumentStatus extends LEDStatus {
+
+    get event_name() {
+        return "leds.document";
+    }
+
+    get path_name() {
+        return "ws/document";
+    }
+
+    pull(document_id) {
+        /*
+        Sends via websocket 'ocrdocument.pull' message to the server.
+
+        'ocrdocument.pull' message basically asks server to send to the
+        client current document status (of the `document_id`).
+        */
+        let message, that=this;
+
+        message = {
+            'document_id': document_id,
+            'type': 'ocrdocument.pull'
+        }
+        this._send(message);
+    }
+
+    find_node(message) {
         /*
         Message is a dictionary with following keys:
             * type
@@ -160,7 +191,7 @@ export class LEDDocumentStatus {
         */
         
         return doc_node;
-    }
+    } // find_node
 
     update_state($dom_node, message) {
         let $led_elem, css_selector, message_type;
@@ -189,112 +220,40 @@ export class LEDDocumentStatus {
         } else if (message_type == OCRDOCUMENT_FAILED) {
             $led_elem.html(led_fail_svg);
         }
-    }
+    } // update_state
 }
 
+export class LEDPageStatus extends LEDStatus {
 
-export class LEDPageStatus {
-
-    constructor(dispatcher, config={}) {
-        let host, ws_url, that=this;
-
-        if (_.isEmpty(dispatcher)) {
-            dispatcher = _.clone(Backbone.Events);
-        }
-        if (_.isEmpty(config)) {
-            config = {
-                'node_selector': '.node',
-                'led_selector': '.led' // led selector within node
-            };
-        }
-
-        this._dispatcher = dispatcher;
-        this._config = config;
-        this._dispatcher.on("leds.page", this.on_update, this);
-
-        host = window.location.host;
-        ws_url = `ws://${host}/ws/page`;
-
-        this._socket = new WebSocket(ws_url);
-        this._socket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-            that._dispatcher.trigger("leds.page", data);
-        };
+    get event_name() {
+        return "leds.page";
     }
 
-    on_update(message) {
-        let led_doc;
-
-        if (_.isEmpty(message)) {
-            return ;
-        }
-        console.log(message);
-        //this.update(message['document_data'], message['ocr_state']);
+    get path_name() {
+        return "ws/page";
     }
 
-    update(doc_data, ocr_state) {
-
-        let $dom_node = this.find_node(doc_data);
-
-        if ($dom_node) {
-            this.update_state($dom_node, ocr_state);
-        }
-    }
-
-    find_node(doc_data) {
-        let doc_node, nodes, selector, document_id;
-
-        document_id = doc_data['document_id'];
-        selector = this._config['node_selector'];
-        doc_node = $(`${selector}[data-id='${document_id}']`);
+    pull(page_ids) {
         /*
-        console.log(
-            `Node selector = ${selector}[data-id='${document_id}'], count=${doc_node.length}`
-        );
+        Sends via websocket 'ocrpage.pull' message to the server.
+
+        'ocrpage.pull' message basically asks server to send to the
+        client pages status (of the `page_ids`).
         */
-        
-        return doc_node;
+        let message, that=this;
+
+        message = {
+            'page_ids': page_ids,
+            'type': 'ocrpage.pull'
+        }
+        this._send(message);
     }
 
-    update_state($dom_node, ocr_state) {
-        let $led_elem, state, result, css_selector;
+    find_node(message) {
+        // ...
+    }
 
-        if (_.isEmpty($dom_node)) {
-            console.error("LEDStatus: empty node element");
-            return;
-        }
-
-        css_selector = this._config['led_selector']
-        $led_elem = $dom_node.find(css_selector);
-
-        if (_.isEmpty($led_elem)) {
-            console.error("LEDStatus: empty led status element");
-            return;
-        }
-
-        //console.log(`Found count ${ $led_elem.length } led elements`);
-
-        state = ocr_state['state'];
-        result = ocr_state['result']
-
-        //console.log(`state=${state}`)
-
-        if (state == OCR_START) {
-            // green blinking
-            $led_elem.removeClass(LED_CLASSES);
-            $led_elem.addClass([GREEN, BLINK])
-        }
-
-        if (state == OCR_COMPLETE && result == SUCCESS) {
-            // green static
-            $led_elem.removeClass(LED_CLASSES);
-            $led_elem.addClass([GREEN])
-        }
-
-        if (state == OCR_COMPLETE && result == ERROR) {
-            // red static
-            $led_elem.removeClass(LED_CLASSES);
-            $led_elem.addClass([RED])
-        }
+    update_state($dom_node, message) {
+        // ...
     }
 }
