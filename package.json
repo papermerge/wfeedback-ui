@@ -7,7 +7,8 @@
     "document management system"
   ],
   "scripts": {
-    "test": "jasmine"
+    "test": "jasmine",
+    "build": "webpack"
   },
   "author": "Eugen Ciur",
   "license": "Apache 2.0",
@@ -15,7 +16,10 @@
     "@babel/core": "^7.13.14",
     "@babel/preset-env": "^7.13.12",
     "@babel/register": "^7.13.14",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.2.2",
     "babel-preset": "^1.1.7",
+    "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
     "backbone": "^1.4.0",
     "gulp": "^4.0.2",

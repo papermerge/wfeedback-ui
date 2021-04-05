@@ -10,10 +10,19 @@ module.exports = {
   },
   module: {
     rules: [
-        {
-            test: /\.svg/,
-            type: 'asset/source',
-        }
-    ]
+      {   // rule 1 - for loading svg files
+        test: /\.svg/,
+        type: 'asset/source',
+      },  // end of rule 1
+      {   // rule 2
+        test: /\.js$/,
+        exclude: ["/node_modules/"],
+        use: [
+          {
+            loader: "babel-loader",
+          },
+        ],  // end of use
+      },  // end of rule 2
+    ]  // end of rules
   }
 };

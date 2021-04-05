@@ -29,8 +29,12 @@ point browser to http://localhost:5000/ web address.
 
 ## Build JS Bundle
 
-To createa javascript bundle with webpack, run:
+To create the javascript bundle with webpack, run:
 
     $ npx webpack ./src/js/led_status.js
 
 JS bundle will be saved in `dist/leds.bundle.js` file.
+
+Same effect can be achieved with following command:
+
+    $ npm run-script build
