@@ -34,6 +34,8 @@
     "jasmine": "^3.7.0",
     "jquery": "^3.6.0",
     "mocha": "^8.3.2",
+    "source-map": "^0.7.3",
+    "source-map-support": "^0.5.19",
     "underscore": "^1.12.0",
     "webpack": "^5.25.1",
     "webpack-cli": "^4.5.0",

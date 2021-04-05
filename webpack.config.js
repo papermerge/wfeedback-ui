@@ -4,12 +4,15 @@ let glob = require("glob");
 let entry_point = path.resolve(__dirname, 'src/js/led_status.js');
 let output_path = path.resolve(__dirname, 'dist');
 let output_filename = "leds.bundle.js";
+// used to map bundles to original code lines 
+let devtool = "";
 
 
 if ( process.env.TESTBUILD ) {
   entry_point = glob.sync(__dirname + "/tests/**/*_test.js");
   output_path = __dirname + "/test-dist/";
   output_filename = "tests.bundle.js";
+  devtool = "source-map";
 }
 
 module.exports = {
@@ -36,5 +39,6 @@ module.exports = {
         ],  // end of use
       },  // end of rule 2
     ]  // end of rules
-  }
+  },
+  devtool: devtool  // correctly map sources in test mode
 };
