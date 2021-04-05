@@ -5,7 +5,7 @@ let entry_point = path.resolve(__dirname, 'src/js/led_status.js');
 let output_path = path.resolve(__dirname, 'dist');
 let output_filename = "leds.bundle.js";
 // used to map bundles to original code lines 
-let devtool = "";
+let devtool = false;
 
 
 if ( process.env.TESTBUILD ) {

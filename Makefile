@@ -1,10 +1,9 @@
 test:
-	npm run-script test
+	TESTBUILD=true npx webpack
 	npx mocha test-dist/tests.bundle.js --require source-map-support/register
 
 clean:
 	rm -fr test-dist/
 
 build:
-	npm run-script build
-
+	npx webpack --config webpack.config.js
