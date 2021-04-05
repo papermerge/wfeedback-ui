@@ -14,33 +14,64 @@ const OCRDOCUMENT_SUCCEEDED = 'ocrdocument.succeeded'
 const OCRDOCUMENT_FAILED = 'ocrdocument.failed'
 
 
+let default_config = {
+    'node_selector': '.node',
+    'led_selector': '.led',
+    'use_sockets': true
+}
+
 export class LEDDocumentStatus {
 
     constructor(dispatcher, config={}) {
+        /**
+        `distapcher` is Backbone.Events class used as events trigger.
+            You can send "leds.document" type events.
+
+        `config` is a dictionary with following keys:
+            * 'node_selector' default value '.node'
+            * 'led_selector'  default value '.led'
+            * 'use_socket'    default value false    
+        **/
         let host, ws_url, that=this;
 
         if (_.isEmpty(dispatcher)) {
             dispatcher = _.clone(Backbone.Events);
         }
-        if (_.isEmpty(config)) {
-            config = {
-                'node_selector': '.node',
-                'led_selector': '.led' // led selector within node
-            };
-        }
-
+        this._config = Object.assign(default_config, config)
         this._dispatcher = dispatcher;
-        this._config = config;
         this._dispatcher.on("leds.document", this.on_update, this);
 
-        host = window.location.host;
-        ws_url = `ws://${host}/ws/document`;
+        if (this._config['use_sockets']) { 
+            ws_url = this.get_ws_url(window.location);
 
-        this._socket = new WebSocket(ws_url);
-        this._socket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-            that._dispatcher.trigger("leds.document", data);
-        };
+            this._socket = new WebSocket(ws_url);
+            this._socket.onmessage = function(e) {
+                const data = JSON.parse(e.data);
+                that._dispatcher.trigger("leds.document", data);
+            };
+        }
+    }
+
+    get_ws_url(window_location) {
+        /**
+        Builds web sockets url.
+
+        `window_location` is an instance of window.location object
+
+        If current connection (window.location) is over http://,
+        ws_url will use ws:// prefix.
+        If current connection (window.location) is over https://,
+        ws_url will use wss:// prefix.
+        */
+        let host = window_location.host,
+            proto = window_location.protocol,
+            path = 'ws/document';
+
+        if (proto == 'http:') {
+            return `ws://${host}/${path}`;
+        }
+
+        return `wss://${host}/${path}`;
     }
 
     _send(message) {
@@ -232,7 +263,6 @@ export class LEDPageStatus {
             console.error("LEDStatus: empty node element");
             return;
         }
-
 
         css_selector = this._config['led_selector']
         $led_elem = $dom_node.find(css_selector);
