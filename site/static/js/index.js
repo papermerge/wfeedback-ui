@@ -14,7 +14,6 @@ $(function(){
         
         document_id = $("#document-selector").val();
         state = $('#document-state').val();
-        result = $('#document-result').val();
 
         message = {
             "document_id": document_id,

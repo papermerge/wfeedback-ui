@@ -11,6 +11,7 @@ import led_fail_svg from '../assets/led-fail.svg';
 const OCRDOCUMENT_RECEIVED = 'ocrdocument.received'
 const OCRDOCUMENT_STARTED = 'ocrdocument.started'
 const OCRDOCUMENT_SUCCEEDED = 'ocrdocument.succeeded'
+const OCRDOCUMENT_FAILED = 'ocrdocument.failed'
 
 
 export class LEDDocumentStatus {
@@ -154,6 +155,8 @@ export class LEDDocumentStatus {
             $led_elem.html(led_in_progress_svg);
         } else if (message_type == OCRDOCUMENT_SUCCEEDED) {
             $led_elem.html(led_success_svg);
+        } else if (message_type == OCRDOCUMENT_FAILED) {
+            $led_elem.html(led_fail_svg);
         }
     }
 }

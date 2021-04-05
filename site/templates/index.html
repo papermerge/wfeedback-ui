@@ -4,31 +4,33 @@
     <section class="content">
         <h1>LED Status Indicators</h1>
         <p>
-            Attches LED status indicator to the elements with .led-status css class.
+            Attches LED status indicator to the elements with specific css class selector.
         </p>
         <p>LED status can be for:</p>
-        <ul>
-            <li>1. Documents - in documents browser</li>
-            <li>2. Pages - in document viewer</li>
-        </ul>
+        <ol>
+            <li>Documents - in documents browser</li>
+            <li>Pages - in document viewer</li>
+        </ol>
     </section>
     <h2>States</h2>
     <ul>
         <li>
             <p>State unknown:</p>
+            <!-- verbatim copy of src/assets/led-unknown.svg -->
             <svg class="led led-unknown" width="16" height="16" viewBox="0 0 16 16">
               <circle cx="10" cy="10" r="5" />
             </svg>
         </li>
         <li>
             <p>State pending:</p>
+            <!-- verbatim copy of src/assets/led-pending.svg -->
             <svg class="led led-pending" width="16" height="16" viewBox="0 0 16 16">
               <circle cx="10" cy="10" r="5" />
             </svg>
         </li>
         <li>
             <p>State in progress:</p>
-
+            <!-- verbatim copy of src/assets/led-in-progress.svg -->
             <svg class="led led-in-progress" width="16" height="16" fill="none" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
               <path opacity=".5" d="M8 15A7 7 0 108 1a7 7 0 000 14v0z" stroke="orange" stroke-width="2"></path>
               <path d="M15 8a7 7 0 01-7 7" stroke="orange" stroke-width="2"></path>
@@ -37,6 +39,7 @@
         </li>
         <li>
             <p>State complete: success</p>
+            <!-- verbatim copy of src/assets/led-success.svg -->
             <svg class="led led-success" width="16" height="16" viewBox="0 0 16 16">
               <path fill-rule="evenodd" d="M8 16A8 8 0 108 0a8 8 0 000 16zm3.78-9.72a.75.75 0 00-1.06-1.06L6.75 9.19 5.28 7.72a.75.75 0 00-1.06 1.06l2 2a.75.75 0 001.06 0l4.5-4.5z">
               </path>
@@ -44,6 +47,7 @@
         </li>
         <li>
             <p>State complete: fail</p>
+            <!-- verbatim copy of src/assets/led-fail.svg -->
             <svg class="led led-fail" width="16" height="16" viewBox="0 0 16 16" version="1.1">
               <path fill-rule="evenodd" d="M2.343 13.657A8 8 0 1113.657 2.343 8 8 0 012.343 13.657zM6.03 4.97a.75.75 0 00-1.06 1.06L6.94 8 4.97 9.97a.75.75 0 101.06 1.06L8 9.06l1.97 1.97a.75.75 0 101.06-1.06L9.06 8l1.97-1.97a.75.75 0 10-1.06-1.06L8 6.94 6.03 4.97z">
               </path>
@@ -68,10 +72,7 @@
               <option value="ocrdocument.received">Received</option>
               <option value="ocrdocument.started">Started</option>
               <option value="ocrdocument.succeeded">Succeeded</option>
-            </select>
-            <select name="result" id="document-result">
-              <option value="error">Error</option>
-              <option value="success">Sucess</option>
+              <option value="ocrdocument.failed">Failed</option>
             </select>
             <button id="apply" class="apply">Apply</button>
             <ul>
