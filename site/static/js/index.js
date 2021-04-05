@@ -17,14 +17,10 @@ $(function(){
         result = $('#document-result').val();
 
         message = {
-            "document_data": {
-                "document_id": document_id
-            },
-            "ocr_state": {
-                "state": state,
-                "result": result
-            }
+            "document_id": document_id,
+            "type": state
         }
+
         events.trigger(
             "leds.document", message
         );

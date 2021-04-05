@@ -42,6 +42,32 @@ export class LEDDocumentStatus {
         };
     }
 
+    _send(message) {
+        let that = this;
+
+        if (this._socket) {
+            this._socket.onopen = function() {
+               that._socket.send(JSON.stringify(message)); 
+            }
+        }
+    }
+
+    pull(document_id) {
+        /*
+        Sends via websocket 'ocrdocument.pull' message to the server.
+
+        'ocrdocument.pull' message basically asks server to send to the
+        client current document status (of the `document_id`).
+        */
+        let message, that=this;
+
+        message = {
+            'document_id': document_id,
+            'type': 'ocrdocument.pull'
+        }
+        this._send(message);
+    }
+
     on_update(message) {
         /*
         Message is a dictionary with following keys:
@@ -126,7 +152,7 @@ export class LEDDocumentStatus {
             $led_elem.html(led_pending_svg);
         } else if (message_type == OCRDOCUMENT_STARTED) {
             $led_elem.html(led_in_progress_svg);
-        } else if (message_type == OCRDOCUMENT_SUCCEEDED){
+        } else if (message_type == OCRDOCUMENT_SUCCEEDED) {
             $led_elem.html(led_success_svg);
         }
     }
