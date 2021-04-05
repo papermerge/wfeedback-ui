@@ -1,11 +1,23 @@
 const path = require('path');
 
+let glob = require("glob");
+let entry_point = path.resolve(__dirname, 'src/js/led_status.js');
+let output_path = path.resolve(__dirname, 'dist');
+let output_filename = "leds.bundle.js";
+
+
+if ( process.env.TESTBUILD ) {
+  entry_point = glob.sync(__dirname + "/tests/**/*_test.js");
+  output_path = __dirname + "/test-dist/";
+  output_filename = "tests.bundle.js";
+}
+
 module.exports = {
   mode: 'development',
-  entry: './src/js/led_status.js',
+  entry: entry_point,
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'leds.bundle.js',
+    path: output_path,
+    filename: output_filename,
     library: 'LEDS',
   },
   module: {

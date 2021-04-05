@@ -38,3 +38,17 @@ JS bundle will be saved in `dist/leds.bundle.js` file.
 Same effect can be achieved with following command:
 
     $ npm run-script build
+
+Or
+
+    $ make build
+
+
+## Run Tests
+
+    $ npm run-script test
+    $ npx mocha test-dist/tests.bundle.js
+
+You can run test suite using one command:
+
+    $ make test
