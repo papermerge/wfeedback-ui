@@ -6,6 +6,7 @@ let output_path = path.resolve(__dirname, 'dist');
 let output_filename = "leds.bundle.js";
 // used to map bundles to original code lines 
 let devtool = false;
+let mode = process.env.NODE_ENV == 'production' ? 'production' : 'development';
 
 
 if ( process.env.TESTBUILD ) {
@@ -16,7 +17,7 @@ if ( process.env.TESTBUILD ) {
 }
 
 module.exports = {
-  mode: 'development',
+  mode: mode,
   entry: entry_point,
   output: {
     path: output_path,

@@ -17,8 +17,12 @@ run led_status outside of Papermerge.
 
 1. First build js/css distribution files with:
 
-    $ gulp
+    $ make build
 
+To toggle minified/not minified versions of the files use NODE_ENV environment variable:
+
+    $ NODE_ENV=development make build  # build development version of the assets
+    $ NODE_ENV=production make build  # build production version of the assets
 
 2. Launch local project to see led_status in action:
 
