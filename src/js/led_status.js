@@ -50,7 +50,7 @@ class LEDStatus {
             this._socket = new WebSocket(ws_url);
             this._socket.onmessage = function(e) {
                 const data = JSON.parse(e.data);
-                that._dispatcher.trigger(this.event_name, data);
+                that._dispatcher.trigger(that.event_name, data);
             };
         }
     }
