@@ -244,11 +244,11 @@ export class LEDPageStatus extends LEDStatus {
             * ocrpage.started
             * ocrpage.succeeded
         */
-        let page_node, nodes, selector, page_id;
+        let page_node, nodes, selector, page_num;
 
-        page_id = message['page_id'];
+        page_num = message['page_num'];
         selector = this._config['node_selector'];
-        page_node = $(`${selector}[data-id='${page_id}']`);
+        page_node = $(`${selector}[data-page_num='${page_num}']`);
         
         return page_node;
     }
